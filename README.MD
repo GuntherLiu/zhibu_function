@@ -1,1 +1,1 @@
-zhibu function
+zhibu function auto do
