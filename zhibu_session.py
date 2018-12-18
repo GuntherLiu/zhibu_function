@@ -46,7 +46,7 @@ class ZhibuSession:
 
             if not self.is_login() and ind < 50:
                 ind += 1
-                print '%d%s%d' % (ind, ',the auth code is wrong: ', auth_code)
+                print '%d%s%s' % (ind, ',the auth code is wrong: ', auth_code)
             else:
                 print 'login success'
                 break
