@@ -3,6 +3,8 @@ import logger
 import requests
 import re
 from time import sleep
+from PIL import Image
+from pytesser import image_to_string
 
 class ZhibuSession:
     def __init__(self):
@@ -63,8 +65,27 @@ class ZhibuSession:
             f.write(t.content)
             f.close()
         auth_code = raw_input("input auth ode: ")
-
+        # auth_code = self.verify_code()
         return captcha_token, auth_code
+
+    def verify_code(self):
+
+        img = Image.open('captcha.png')
+        img_grey = img.convert('L')
+
+        threshold = 140
+        table = []
+        for i in range(256):
+            if i < threshold:
+                table.append(0)
+            else:
+                table.append(1)
+        img_out = img_grey.point(table, '1')
+
+        code = image_to_string(img_out)
+
+        return code
+
 
     def is_login(self):
         logger.logger('judge weather it is login')
@@ -74,3 +95,9 @@ class ZhibuSession:
             return False
         else:
             return True
+
+if __name__ == '__main__':
+    testSession = ZhibuSession();
+    captcha_token, auth_code = testSession.get_token();
+
+    print auth_code

@@ -183,12 +183,16 @@ class Func:
         question_list = self.zhibu_session.do_post(post_begin_exam_url, begin_exam_body).json()['data']['list']
         logger.logger(question_list, 'the question list')
         post_check_url = 'https://capi.dangjianwang.com/official/exam/ques/check'
+
         for i, ex in enumerate(question_list):
             qu_id = ex['id']
             user_answer = ''
             for qu in answer_list:
                 if qu_id == qu['id']:
                     user_answer = qu['answer']
+                    right_posibity = random.randint(0, 100) > random.randint(30, 40)
+                    if not right_posibity:
+                        user_answer = '4'
                     break
 
             check_body = {
@@ -202,7 +206,7 @@ class Func:
             print '7. exam post' + check_res.content
             if i == 9:
                 check_res = self.zhibu_session.do_post(post_check_url, check_body)
-                print '6. exam post  lsat exam' + check_res.content
+                print '7. exam post  lsat exam' + check_res.content
             sleep(5)
 
     def get_exam_list(self):
@@ -241,6 +245,9 @@ def test():
     f.do_time()
     f.do_exam()
 
+def test2():
+    f = Func()
+    f.do_exam()
 
 if __name__ == '__main__':
-    test()
+    test2()
