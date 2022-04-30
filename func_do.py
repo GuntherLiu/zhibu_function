@@ -2,17 +2,16 @@
 import logger
 import save_util
 from time import sleep
-import random
 
 
 class Func:
     def __init__(self):
-        # print 'the function of zhibu '
+        # logger.logger 'the function of zhibu '
         self.zhibu_session = save_util.get_zhibu_session()
         if self.zhibu_session.is_login():
-            print('the persistence zhibu_session is logined')
+            logger.logger('the persistence zhibu_session is logined')
         else:
-            print('the persistence zhibu_session is not logined')
+            logger.logger('the persistence zhibu_session is not logined')
 
     def check_in(self):
         logger.logger('the check in func')
@@ -24,7 +23,7 @@ class Func:
             'client': '2'
         }
         self.zhibu_session.do_post(check_in_url, check_in_body)
-        print('1. check in ')
+        logger.logger('1. check in ')
 
     def do_comments(self):
         logger.logger('the post comments func')
@@ -56,12 +55,11 @@ class Func:
             }
             resc2 = self.zhibu_session.do_post(detail_url, data2)
             res = resc2.json()['msg']
-            print('%s%s, %d' % ('2. get article detail:  ', res, i))
+            logger.logger('%s%s, %d' % ('2. get article detail:  ', res, i))
             sleep(5)
             resc = self.zhibu_session.do_post(post_comment_url, data)
-            print('%s%s, %d' % ('3. comment post:  ',  resc.json()['msg'], i))
+            logger.logger('%s%s, %d' % ('3. comment post:  ',  resc.json()['msg'], i))
             sleep(5)
-
 
     def do_time(self):
         logger.logger('the post time func')
@@ -82,7 +80,7 @@ class Func:
         start_time_res = self.zhibu_session.do_post(start_study_url, start_time_body)
         res_json = start_time_res.json()
         if res_json:
-            print('%s%s' % ('3. start time res:  ', res_json['msg']))
+            logger.logger('%s%s' % ('3. start time res:  ', res_json['msg']))
             ticket = res_json['data']['ticket']
             add_time_body['ticket'] = ticket
             study_time = 60 * 10 + 10
@@ -93,7 +91,7 @@ class Func:
                 index += 1
                 sleep(snap_time)
 
-                print('%s%s' % ('4. add time res:  ', time_res.json()))
+                logger.logger('%s%s' % ('4. add time res:  ', time_res.json()))
         # sleep(10)
 
     def get_time_mid(self):
@@ -108,7 +106,7 @@ class Func:
             mid = time_video['id']
             return mid
         else:
-            print("get time mid ERROR")
+            logger.logger("get time mid ERROR")
 
     def do_exam(self):
         logger.logger('the post exam func')
@@ -119,7 +117,7 @@ class Func:
             'id': bank_id
         }
         question_list = self.zhibu_session.do_post(post_begin_exam_url, begin_exam_body).json()['data']['list']
-        logger.logger(question_list, 'the question list')
+        logger.logger("%s:%s " % ("question list: ", question_list))
         post_check_url = 'https://capi.dangjianwang.com/official/exam/ques/check'
 
         for i, ex in enumerate(question_list):
@@ -138,7 +136,7 @@ class Func:
             }
             check_res = self.zhibu_session.do_post(post_check_url, check_body)
 
-            print('%s %s' % ('5. exam post', check_res.json()['msg']))
+            logger.logger('%s %s' % ('5. exam post', check_res.json()['msg']))
 
             sleep(5)
 
@@ -155,10 +153,10 @@ class Func:
         exam_topic_list = exam_topic_res['data']['list']
 
         exam_topic = exam_topic_list[0]
-        logger.logger(exam_topic, 'the choice exam')
         exam_id = exam_topic['bank_id']
 
         return exam_id
+
 
 def do():
     f = Func()
@@ -171,4 +169,3 @@ def do():
 def test2():
     f = Func()
     f.do_exam()
-

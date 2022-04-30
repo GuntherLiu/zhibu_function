@@ -17,13 +17,11 @@ class ZhibuSession:
         }
 
     def do_post(self, url, body):
-        logger.logger(body, url)
         sleep(3)
         res = self.session.post(url, data=body, headers=self.headers)
         return res
 
     def do_get(self, url):
-        logger.logger(url, 'the get method')
         sleep(3)
         res = self.session.get(url, headers=self.headers)
         return res
@@ -47,9 +45,9 @@ class ZhibuSession:
 
             if not self.is_login() and ind < 50:
                 ind += 1
-                print('%d%s%s' % (ind, ',the auth code is wrong: ', auth_code))
+                logger.logger('%d%s%s' % (ind, ',the auth code is wrong: ', auth_code))
             else:
-                print('login success')
+                logger.logger('login success')
                 break
         return True
 
@@ -67,7 +65,6 @@ class ZhibuSession:
         auth_code = self.verify_code()
         return captcha_token, auth_code
 
-
     def verify_code(self):
         sleep(5)
         u2 = "http://api.95man.com:8888/api/Http/Recog?Taken=9hnx0XNLyB5uY3N09Lq6XHNcMWx4&imgtype=2&len=4"
@@ -76,7 +73,7 @@ class ZhibuSession:
         }
         res = requests.post(url=u2, files=files)
         t = res.text
-        print('%s%s' % ('get the code: ', t))
+        logger.logger('%s%s' % ('get the code: ', t))
         ts = t.split('|')
         code = ts[1]
         return code
@@ -94,7 +91,7 @@ class ZhibuSession:
         u1 = "http://api.95man.com:8888/api/Http/UserTaken?user=KingZhao&pwd=296732774&isref=0"
         u2 = "http://api.95man.com:8888/api/Http/Recog?Taken=9hnx0XNLyB5uY3N09Lq6XHNcMWx4&imgtype=2&len=4"
         # res = self.do_get(u1)
-        # print(res.text)
+        # logger.logger(res.text)
 
         files = {
             'file': open('captcha.png', 'rb')
@@ -102,7 +99,7 @@ class ZhibuSession:
         # res = requests.post(url=u2, files=files)
         t = '3927421|1996|0'
         ts = t.split('|')
-        print(ts[1])
+        logger.logger(ts[1])
 
 
 if __name__ == '__main__':

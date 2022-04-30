@@ -65,5 +65,6 @@ def get_zhibu_session():
         logger.logger('login failed')
     return zhibu_session
 
+
 if __name__ == '__main__':
     get_zhibu_session()
