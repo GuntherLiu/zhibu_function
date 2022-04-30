@@ -56,15 +56,14 @@ def test1():
     do_write(view_list,'view_list')
 
 
-def test():
+def get_zhibu_session():
     zhibu_session = ZhibuSession()
     zhibu_session.do_login()
     if zhibu_session.is_login():
         logger.logger('login success')
-        do_write(zhibu_session)
     else:
         logger.logger('login failed')
-
+    return zhibu_session
 
 if __name__ == '__main__':
-    test()
+    get_zhibu_session()

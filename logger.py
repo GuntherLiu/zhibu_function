@@ -1,11 +1,11 @@
 #encoding=utf-8
 import logging
 import json
-logging.basicConfig(filename='zhibu.log', format='%(asctime)s-%(levelname)s %(message)s', level=logging.DEBUG, encoding="utf-8")
+logging.basicConfig(filename='zhibu.log', format='%(asctime)s-%(levelname)s %(message)s', level=logging.DEBUG)
 
 
 def logger(log, info=None):
-    jm = json.dumps(log, encoding="utf-8", ensure_ascii=False, indent=1)
+    jm = json.dumps(log, ensure_ascii=False, indent=1)
     logging.info('%s: %s' % (info, jm))
 
 def test():
