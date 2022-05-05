@@ -2,7 +2,7 @@
 import logger
 import save_util
 from time import sleep
-
+import random
 
 class Func:
     def __init__(self):
@@ -83,8 +83,8 @@ class Func:
             logger.logger('%s%s' % ('3. start time res:  ', res_json['msg']))
             ticket = res_json['data']['ticket']
             add_time_body['ticket'] = ticket
-            study_time = 60 * 10 + 10
-            snap_time = 9
+            study_time = random.randint(60 * 9, 60 * 21)
+            snap_time = 7
             index = 0
             while index * snap_time < study_time:
                 time_res = self.zhibu_session.do_post(add_time_url, add_time_body)
